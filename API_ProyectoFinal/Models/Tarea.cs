@@ -17,8 +17,8 @@ namespace API_ProyectoFinal.Models
         [BsonElement("resumen")]
         public string Resumen { get; set; }
 
-        [BsonElement("nota")]
-        public string Nota { get; set; }
+        [BsonElement("calificacion")]
+        public string Calificacion { get; set; }
 
         [BsonElement("tema")]
         public string? Tema { get; set; }

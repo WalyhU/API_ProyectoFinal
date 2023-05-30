@@ -43,7 +43,8 @@ namespace API_ProyectoFinal.Controllers
                 {
                     return BadRequest("No se pudo agregar la tarea");
                 }
-            } catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.ToString());
                 return BadRequest("No se pudo agregar la tarea, no se cumplio");
@@ -57,7 +58,7 @@ namespace API_ProyectoFinal.Controllers
             {
                 var collection = Database.GetConnection();
                 var filter = Builders<Tarea>.Filter.Eq("Id", tarea.Id);
-                var update = Builders<Tarea>.Update.Set("nombre", tarea.Nombre).Set("carnet", tarea.Carnet).Set("resumen", tarea.Resumen).Set("nota", tarea.Nota);
+                var update = Builders<Tarea>.Update.Set("nombre", tarea.Nombre).Set("carnet", tarea.Carnet).Set("resumen", tarea.Resumen).Set("calificacion", tarea.Calificacion);
                 collection.UpdateOne(filter, update);
                 return Ok("Tarea actualizada");
             }
@@ -68,19 +69,22 @@ namespace API_ProyectoFinal.Controllers
         }
         [HttpDelete]
         [Route("eliminar")]
-        public IActionResult Eliminar(List<Tarea> tareas)
+        public IActionResult Eliminar(string[] ids)
         {
             try
             {
-                Console.WriteLine(tareas);
                 var collection = Database.GetConnection();
-                var filter = Builders<Tarea>.Filter.In("Id", tareas);
-                collection.DeleteMany(filter);
-                return Ok("Tarea eliminada");
-            }
-            catch (Exception)
+                var tareas = "";
+                foreach (var id in ids)
+                {
+                    var filter = Builders<Tarea>.Filter.Eq("Id", id);
+                    collection.DeleteOne(filter);
+                    tareas += id + " ";
+                }
+                return Ok("Tarea eliminada tareas: " + tareas);
+            } catch (Exception e)
             {
-                return BadRequest("No se pudo eliminar la tarea");
+                return BadRequest("No se pudo eliminar la tarea exception: " + e);
             }
         }
         [HttpGet]
@@ -94,9 +98,9 @@ namespace API_ProyectoFinal.Controllers
                 var result = collection.Find(filter).ToList();
                 return Ok(result);
             }
-            catch (System.Exception)
+            catch (Exception e)
             {
-                return BadRequest("No se pudo listar las tareas");
+                return BadRequest("No se pudo listar las tareas: " + e);
             }
         }
     }
