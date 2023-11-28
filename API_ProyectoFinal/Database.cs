@@ -5,7 +5,7 @@ namespace API_ProyectoFinal
 {
     public class Database
     {
-        public static string ConnectionString = "mongodb+srv://walter:yaaoHGkCa3L3ZpiI@proyectofinal.ubpuzum.mongodb.net/?retryWrites=true&w=majority";
+        public static string ConnectionString = "";
 
         public static string DatabaseName = "ProyectoFinal";
 
